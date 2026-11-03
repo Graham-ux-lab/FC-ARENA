@@ -196,14 +196,69 @@ nav {
 .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px; }
 
 /* --- SPLIT LAYOUT (LOGIN / REGISTER) --- */
-.split-layout { display: grid; grid-template-columns: 40% 60%; min-height: calc(100vh - 80px); }
-.split-left { background: var(--bg-dark); color: var(--text-light); padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; }
-.split-left h1 { font-size: 64px; line-height: 1.05; margin-bottom: 24px; }
-.split-left p { color: #a0a5a2; line-height: 1.6; font-size: 15px; }
-.split-right { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; background: var(--bg-cream); }
-.split-right h1 { font-size: 48px; margin-bottom: 32px; }
-.password-wrapper { position: relative; }
-.toggle-password { position: absolute; right: 12px; top: 38px; cursor: pointer; font-size: 11px; font-weight: 700; color: var(--gray-text); background: var(--bg-cream); padding: 2px 6px; }
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 80px);
+  padding: 60px 80px;
+  gap: 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.split-left {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 600px;
+}
+
+.split-left h1 {
+  font-size: 72px;
+  line-height: 0.95;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+}
+
+.split-left p {
+  color: #a0a5a2;
+  line-height: 1.6;
+  font-size: 16px;
+  max-width: 90%;
+}
+
+.split-right {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.split-right h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+  font-family: 'Oswald', sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .split-layout { gap: 40px; padding: 40px 20px; }
+  .split-left { padding: 60px 40px; min-height: 400px; }
+  .split-left h1 { font-size: 56px; }
+}
+
+@media (max-width: 768px) {
+  .split-layout { grid-template-columns: 1fr; padding: 20px; gap: 32px; }
+  .split-left { padding: 40px 24px; min-height: 300px; }
+  .split-left h1 { font-size: 42px; }
+  .split-right { padding: 0 4px; }
+  .split-right h1 { font-size: 32px; }
+}
 
 /* --- MODALS --- */
 .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
@@ -211,7 +266,7 @@ nav {
 
 
 /* =========================================================================
-   MOBILE RESPONSIVENESS — EVERYTHING
+   MOBILE RESPONSIVENESS Ã¢â‚¬â€ EVERYTHING
    ========================================================================= */
 
 /* Prevent any horizontal overflow globally */
@@ -270,7 +325,7 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .page-header h1 { font-size: 36px !important; }
   .page-header p { font-size: 13px !important; margin-bottom: 24px !important; }
 
-  /* All grids → single column */
+  /* All grids Ã¢â€ â€™ single column */
   .tournament-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .results-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .dash-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
