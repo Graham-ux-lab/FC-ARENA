@@ -243,7 +243,7 @@ nav {
 
 
 /* =========================================================================
-   MOBILE RESPONSIVENESS ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â EVERYTHING
+   MOBILE RESPONSIVENESS ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â EVERYTHING
    ========================================================================= */
 
 /* Prevent any horizontal overflow globally */
@@ -302,7 +302,7 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .page-header h1 { font-size: 36px !important; }
   .page-header p { font-size: 13px !important; margin-bottom: 24px !important; }
 
-  /* All grids ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ single column */
+  /* All grids ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ single column */
   .tournament-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .results-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .dash-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
@@ -389,54 +389,24 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   
 }
 /* --- DEFINITIVE SPLIT LAYOUT (Login/Register) --- */
-.split-layout {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  min-height: calc(100vh - 80px);
-  width: 100%;
-}
-.split-left {
-  background: var(--bg-dark);
-  color: var(--text-light);
-  padding: 80px 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+
+
 .split-left h1 { font-size: 64px; line-height: 1.05; margin-bottom: 24px; }
 .split-left p { color: #a0a5a2; line-height: 1.6; font-size: 15px; max-width: 90%; }
-.split-right {
-  padding: 80px 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: var(--bg-cream);
-}
+
 .split-right h1 { font-size: 48px; margin-bottom: 32px; }
 
 @media (max-width: 768px) {
-  .split-layout { grid-template-columns: 1fr; min-height: auto; }
-  .split-left { padding: 40px 20px; }
+  
+  
   .split-left h1 { font-size: 40px; }
-  .split-right { padding: 40px 20px; }
+  
   .split-right h1 { font-size: 32px; margin-bottom: 24px; }
 }
 /* --- SPLIT LAYOUT FIX (Login / Register) --- */
-.split-layout {
-  display: grid !important;
-  grid-template-columns: 40% 60% !important;
-  min-height: calc(100vh - 80px) !important;
-  width: 100% !important;
-}
 
-.split-left {
-  background: var(--bg-dark) !important;
-  color: var(--text-light) !important;
-  padding: 80px 60px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-}
+
+
 
 .split-left h1 {
   font-size: 64px !important;
@@ -451,13 +421,7 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   max-width: 90% !important;
 }
 
-.split-right {
-  padding: 80px 60px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  background: var(--bg-cream) !important;
-}
+
 
 .split-right h1 {
   font-size: 48px !important;
@@ -466,20 +430,67 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
 
 /* Mobile fallback */
 @media (max-width: 768px) {
-  .split-layout {
-    grid-template-columns: 1fr !important;
-    min-height: auto !important;
-  }
-  .split-left {
-    padding: 40px 20px !important;
-  }
+  
+  
   .split-left h1 {
     font-size: 40px !important;
   }
-  .split-right {
-    padding: 40px 20px !important;
-  }
+  
   .split-right h1 {
     font-size: 32px !important;
   }
+}
+
+/* --- FLOATING SPLIT LAYOUT --- */
+.split-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 40px 20px;
+  background: var(--bg-cream);
+}
+
+.split-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  width: 100%;
+  max-width: 1000px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .split-container {
+  background: #16201c;
+}
+
+.split-left {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.split-left h1 { font-size: 52px; line-height: 1.05; margin-bottom: 20px; }
+.split-left p { color: #a0a5a2; line-height: 1.6; font-size: 15px; }
+
+.split-right {
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.split-right h1 { font-size: 38px; margin-bottom: 28px; }
+
+@media (max-width: 768px) {
+  .split-layout { padding: 20px 12px; }
+  .split-container { grid-template-columns: 1fr; }
+  .split-left { padding: 40px 30px; }
+  .split-left h1 { font-size: 38px; }
+  .split-right { padding: 40px 30px; }
+  .split-right h1 { font-size: 28px; }
 }

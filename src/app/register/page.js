@@ -63,76 +63,78 @@ export default function Register() {
 
   return (
     <main className="split-layout">
-      {/* LEFT SIDE - DARK GREEN */}
-      <div className="split-left">
-        <div className="badge" style={{ color: 'var(--gray-text)' }}>Join The Arena</div>
-        <h1>Claim<br/>Your<br/><span style={{ color: 'var(--lime-green)' }}>Spot.</span></h1>
-        <p>Create your profile, enter tournaments, and show the community what you're made of.</p>
-      </div>
+      <div className="split-container">
+        {/* LEFT SIDE - DARK GREEN */}
+        <div className="split-left">
+          <div className="badge" style={{ color: 'var(--gray-text)' }}>Join The Arena</div>
+          <h1>Claim<br/>Your<br/><span style={{ color: 'var(--lime-green)' }}>Spot.</span></h1>
+          <p>Create your profile, enter tournaments, and show the community what you're made of.</p>
+        </div>
 
-      {/* RIGHT SIDE - FORM */}
-      <div className="split-right">
-        <div className="badge">Registration</div>
-        <h1>Create Profile</h1>
-        
-        <form onSubmit={handleRegister}>
-          <div className="form-group">
-            <label>Name</label>
-            <input type="text" name="name" required />
-          </div>
+        {/* RIGHT SIDE - FORM */}
+        <div className="split-right">
+          <div className="badge">Registration</div>
+          <h1>Create Profile</h1>
           
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ borderColor: email && !validateEmail(email) ? '#e53935' : undefined }} />
-            {email && !validateEmail(email) && <div style={{ fontSize: 11, color: '#e53935', marginTop: 4 }}>Invalid email format</div>}
-          </div>
-          
-          <div className="form-group password-wrapper">
-            <label>Password</label>
-            <input type={showPassword ? 'text' : 'password'} value={password} onChange={e => { setPassword(e.target.value); checkStrength(e.target.value); }} required />
-            <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? 'HIDE' : 'SHOW'}
-            </span>
-          </div>
-          
-          {password && (
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ height: 4, background: '#e0ddd5', borderRadius: 2, overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: (strength.score / 5) * 100 + '%', background: strength.color, transition: 'all 0.3s' }}></div>
-              </div>
-              <div style={{ fontSize: 11, marginTop: 4, color: strength.color, fontWeight: 600 }}>{strength.label}</div>
+          <form onSubmit={handleRegister}>
+            <div className="form-group">
+              <label>Name</label>
+              <input type="text" name="name" required />
             </div>
-          )}
+            
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required style={{ borderColor: email && !validateEmail(email) ? '#e53935' : undefined }} />
+              {email && !validateEmail(email) && <div style={{ fontSize: 11, color: '#e53935', marginTop: 4 }}>Invalid email format</div>}
+            </div>
+            
+            <div className="form-group password-wrapper">
+              <label>Password</label>
+              <input type={showPassword ? 'text' : 'password'} value={password} onChange={e => { setPassword(e.target.value); checkStrength(e.target.value); }} required />
+              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? 'HIDE' : 'SHOW'}
+              </span>
+            </div>
+            
+            {password && (
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ height: 4, background: '#e0ddd5', borderRadius: 2, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: (strength.score / 5) * 100 + '%', background: strength.color, transition: 'all 0.3s' }}></div>
+                </div>
+                <div style={{ fontSize: 11, marginTop: 4, color: strength.color, fontWeight: 600 }}>{strength.label}</div>
+              </div>
+            )}
+            
+            <div className="form-group password-wrapper">
+              <label>Confirm Password</label>
+              <input type={showConfirm ? 'text' : 'password'} value={confirm} onChange={e => setConfirm(e.target.value)} required style={{ borderColor: confirm && confirm !== password ? '#e53935' : undefined }} />
+              <span className="toggle-password" onClick={() => setShowConfirm(!showConfirm)}>
+                {showConfirm ? 'HIDE' : 'SHOW'}
+              </span>
+              {confirm && confirm !== password && <div style={{ fontSize: 11, color: '#e53935', marginTop: 4 }}>Passwords do not match</div>}
+            </div>
+            
+            <div className="form-group">
+              <label>EA ID</label>
+              <input type="text" name="ea_id" required />
+            </div>
+            
+            <div className="form-group">
+              <label>Platform</label>
+              <input type="text" value="PlayStation" disabled style={{ background: '#e0ddd5', cursor: 'not-allowed' }} readOnly />
+            </div>
+            
+            <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
+              Register
+            </button>
+          </form>
           
-          <div className="form-group password-wrapper">
-            <label>Confirm Password</label>
-            <input type={showConfirm ? 'text' : 'password'} value={confirm} onChange={e => setConfirm(e.target.value)} required style={{ borderColor: confirm && confirm !== password ? '#e53935' : undefined }} />
-            <span className="toggle-password" onClick={() => setShowConfirm(!showConfirm)}>
-              {showConfirm ? 'HIDE' : 'SHOW'}
-            </span>
-            {confirm && confirm !== password && <div style={{ fontSize: 11, color: '#e53935', marginTop: 4 }}>Passwords do not match</div>}
-          </div>
+          {msg.text && <div style={{ marginTop: 16, fontSize: 13, color: msg.type === 'success' ? '#2a9d4f' : '#e53935', fontWeight: 600 }}>{msg.text}</div>}
           
-          <div className="form-group">
-            <label>EA ID</label>
-            <input type="text" name="ea_id" required />
-          </div>
-          
-          <div className="form-group">
-            <label>Platform</label>
-            <input type="text" value="PlayStation" disabled style={{ background: '#e0ddd5', cursor: 'not-allowed' }} readOnly />
-          </div>
-          
-          <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
-            Register
-          </button>
-        </form>
-        
-        {msg.text && <div style={{ marginTop: 16, fontSize: 13, color: msg.type === 'success' ? '#2a9d4f' : '#e53935', fontWeight: 600 }}>{msg.text}</div>}
-        
-        <p style={{ marginTop: 24, fontSize: 13, color: 'var(--gray-text)' }}>
-          Already have an account? <Link href="/login" style={{ color: 'var(--text-dark)', fontWeight: 600 }}>Sign in</Link>
-        </p>
+          <p style={{ marginTop: 24, fontSize: 13, color: 'var(--gray-text)' }}>
+            Already have an account? <Link href="/login" style={{ color: 'var(--text-dark)', fontWeight: 600 }}>Sign in</Link>
+          </p>
+        </div>
       </div>
     </main>
   );

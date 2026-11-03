@@ -27,42 +27,44 @@ export default function Login() {
 
   return (
     <main className="split-layout">
-      {/* LEFT SIDE - DARK GREEN */}
-      <div className="split-left">
-        <div className="badge" style={{ color: 'var(--gray-text)' }}>FC ARENA Account</div>
-        <h1>The Next<br/>Match Is<br/><span style={{ color: 'var(--lime-green)' }}>Yours.</span></h1>
-        <p>Sign in to follow your fixtures, keep your entries in one place, and track your climb.</p>
-      </div>
+      <div className="split-container">
+        {/* LEFT SIDE - DARK GREEN */}
+        <div className="split-left">
+          <div className="badge" style={{ color: 'var(--gray-text)' }}>FC ARENA Account</div>
+          <h1>The Next<br/>Match Is<br/><span style={{ color: 'var(--lime-green)' }}>Yours.</span></h1>
+          <p>Sign in to follow your fixtures, keep your entries in one place, and track your climb.</p>
+        </div>
 
-      {/* RIGHT SIDE - FORM */}
-      <div className="split-right">
-        <div className="badge">Welcome Back</div>
-        <h1>Sign In</h1>
-        
-        <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required />
-          </div>
+        {/* RIGHT SIDE - FORM */}
+        <div className="split-right">
+          <div className="badge">Welcome Back</div>
+          <h1>Sign In</h1>
           
-          <div className="form-group password-wrapper">
-            <label>Password</label>
-            <input type={showPassword ? 'text' : 'password'} name="password" required />
-            <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? 'HIDE' : 'SHOW'}
-            </span>
-          </div>
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" name="email" required />
+            </div>
+            
+            <div className="form-group password-wrapper">
+              <label>Password</label>
+              <input type={showPassword ? 'text' : 'password'} name="password" required />
+              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? 'HIDE' : 'SHOW'}
+              </span>
+            </div>
+            
+            <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
+              Sign In
+            </button>
+          </form>
           
-          <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
-            Sign In
-          </button>
-        </form>
-        
-        {error && <div style={{ marginTop: 16, fontSize: 13, color: '#e53935', fontWeight: 600 }}>{error}</div>}
-        
-        <p style={{ marginTop: 24, fontSize: 13, color: 'var(--gray-text)' }}>
-          No account? <Link href="/register" style={{ color: 'var(--text-dark)', fontWeight: 600 }}>Register here</Link>
-        </p>
+          {error && <div style={{ marginTop: 16, fontSize: 13, color: '#e53935', fontWeight: 600 }}>{error}</div>}
+          
+          <p style={{ marginTop: 24, fontSize: 13, color: 'var(--gray-text)' }}>
+            No account? <Link href="/register" style={{ color: 'var(--text-dark)', fontWeight: 600 }}>Register here</Link>
+          </p>
+        </div>
       </div>
     </main>
   );
