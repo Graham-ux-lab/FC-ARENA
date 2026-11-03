@@ -1,0 +1,8 @@
+USE fifa_db;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE match_edits;
+TRUNCATE TABLE matches;
+TRUNCATE TABLE registrations;
+TRUNCATE TABLE tournaments;
+TRUNCATE TABLE users;
+SET FOREIGN_KEY_CHECKS = 1;
