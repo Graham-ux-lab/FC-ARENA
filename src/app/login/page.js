@@ -19,7 +19,7 @@ export default function Login() {
     const data = await res.json();
     if (res.ok) {
       localStorage.setItem('fifa_token', data.token);
-      router.push('/dashboard');
+      router.push(data.role === 'admin' ? '/admin' : '/dashboard');
     } else {
       setError(data.error || 'Login failed');
     }

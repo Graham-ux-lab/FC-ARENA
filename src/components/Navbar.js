@@ -3,15 +3,27 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
+function decodeRole(token) {
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role || null;
+  } catch {
+    return null;
+  }
+}
+
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('fifa_token');
     setIsLoggedIn(!!token);
+    setIsAdmin(decodeRole(token) === 'admin');
 
     // Load theme
     const savedTheme = localStorage.getItem('fifa_theme');
@@ -55,12 +67,13 @@ export default function Navbar() {
         <Link href="/leaderboard">Leaderboard</Link>
         <Link href="/results">Results</Link>
       </div>
-      <div className="nav-actions">
+<div className="nav-actions">
         <button onClick={toggleTheme} className="btn-theme" title="Toggle theme">
           {darkMode ? 'LIGHT' : 'DARK'}
         </button>
         {isLoggedIn ? (
           <>
+            {isAdmin && <Link href="/admin" className="btn-signin">Admin</Link>}
             <Link href="/dashboard" className="btn-signin">Dashboard</Link>
             <button onClick={logout} className="btn-register">Logout</button>
           </>

@@ -15,5 +15,5 @@ export async function POST(req) {
   if (!ok) return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
 
   const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'secret');
-  return NextResponse.json({ token });
+  return NextResponse.json({ token, role: user.role });
 }
