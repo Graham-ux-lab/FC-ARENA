@@ -76,7 +76,7 @@ export default function Tournaments() {
           <p>Choose your format, pick your region, and register for a bracket worth showing up for.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }} id="tournamentGrid">
+        <div className="tournament-grid" id="tournamentGrid">
           {tournaments.map(t => {
             const status = getRegStatus(t.id);
             return (
@@ -87,7 +87,7 @@ export default function Tournaments() {
                   </span>
                 </div>
                 <h3 style={{ fontSize: 24 }}>{t.name}</h3>
-                <div className="card-meta">EA SPORTS FC 25 · 1v1 · Single Elim</div>
+                <div className="card-meta">EA SPORTS FC 25 Â· 1v1 Â· Single Elim</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-light)', paddingTop: 16, marginBottom: 16, fontSize: 14 }}>
                   <span>Max: {t.max_players} players</span>
                   <span>Region: Europe</span>

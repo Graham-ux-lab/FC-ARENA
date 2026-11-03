@@ -208,7 +208,7 @@ export default function Admin() {
               <div className="stat-card"><span className="stat-value">{tournaments.filter(t => t.status === 'ongoing').length}</span><span className="stat-label">Live Now</span></div>
             </div>
 
-            <div className="admin-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, marginBottom: 32 }}>
+            <div className="admin-grid">
               <div className="card">
                 <h3 style={{ marginBottom: 24 }}>Pending Users</h3>
                 {pendingUsers.map(u => (
@@ -343,7 +343,7 @@ export default function Admin() {
               <div className="card" style={{ border: '2px solid var(--bg-dark)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
                   <h3>Managing: {tournaments.find(t => t.id === selectedTid)?.name}</h3>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <div className="manage-actions" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     <button onClick={() => handleTournamentAction(selectedTid, 'generate')} className="btn-primary" style={{ padding: '8px 16px', fontSize: 13 }}>Generate Bracket</button>
                     <button onClick={() => handleTournamentAction(selectedTid, 'advance')} className="btn-secondary" style={{ padding: '8px 16px', fontSize: 13 }}>Advance Round</button>
                     <button onClick={() => handleTournamentAction(selectedTid, 'complete')} className="btn-secondary" style={{ padding: '8px 16px', fontSize: 13, borderColor: 'red', color: 'red' }}>Mark Complete</button>
@@ -375,7 +375,7 @@ export default function Admin() {
                         <div>
                           {m.player1_id && m.player2_id && (
                             isEditing ? (
-                              <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                              <div className="score-inputs" style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
                                 <input type="number" style={{ width: 42, padding: 4 }} value={scoreInput.p1} onChange={e => setScoreInput({...scoreInput, p1: e.target.value})} />
                                 <input type="number" style={{ width: 42, padding: 4 }} value={scoreInput.p2} onChange={e => setScoreInput({...scoreInput, p2: e.target.value})} />
                                 <button onClick={() => submitScore(m.id, scoreInput.isEdit)} className="btn-primary" style={{ padding: '4px 8px', fontSize: 11 }}>Save</button>
@@ -415,7 +415,7 @@ export default function Admin() {
                 <button onClick={() => generateBracket('random')} className="btn-primary" style={{ padding: 16, justifyContent: 'flex-start' }}>
                   <div style={{ textAlign: 'left' }}>
                     <strong style={{ display: 'block' }}>Random Shuffle</strong>
-                    <span style={{ fontSize: 12, opacity: 0.7 }}>Fast and fair — everyone has an equal chance</span>
+                    <span style={{ fontSize: 12, opacity: 0.7 }}>Fast and fair ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â everyone has an equal chance</span>
                   </div>
                 </button>
                 <button onClick={() => generateBracket('seeded')} className="btn-secondary" style={{ padding: 16, justifyContent: 'flex-start', color: 'var(--text-dark)', borderColor: 'var(--border-light)' }}>
@@ -435,16 +435,16 @@ export default function Admin() {
             <div className="card" style={{ width: '100%', maxWidth: 700, background: 'var(--bg-cream)', maxHeight: '80vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <h3>Audit Log</h3>
-                <button onClick={() => setAuditMatch(null)} style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer' }}>×</button>
+                <button onClick={() => setAuditMatch(null)} style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer' }}>ÃƒÆ’Ã¢â‚¬â€</button>
               </div>
               {auditData.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No edits recorded for this match.</p>}
               {auditData.map((e, i) => (
                 <div key={i} style={{ padding: 12, border: '1px solid var(--border-light)', background: '#fff', marginBottom: 8 }}>
                   <div style={{ fontSize: 12, color: 'var(--gray-text)', marginBottom: 4 }}>
-                    {new Date(e.edited_at).toLocaleString()} · by <strong>{e.editor}</strong>
+                    {new Date(e.edited_at).toLocaleString()} Ãƒâ€šÃ‚Â· by <strong>{e.editor}</strong>
                   </div>
                   <div style={{ fontSize: 14 }}>
-                    Score: <strong>{e.old_p1_score} : {e.old_p2_score}</strong> → <strong style={{ color: '#2a9d4f' }}>{e.new_p1_score} : {e.new_p2_score}</strong>
+                    Score: <strong>{e.old_p1_score} : {e.old_p2_score}</strong> ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ <strong style={{ color: '#2a9d4f' }}>{e.new_p1_score} : {e.new_p2_score}</strong>
                   </div>
                 </div>
               ))}
