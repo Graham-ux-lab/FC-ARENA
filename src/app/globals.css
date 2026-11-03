@@ -60,6 +60,44 @@ img, svg { max-width: 100%; height: auto; }
   width: 100%;
 }
 
+/* --- HOMEPAGE SCROLL-REVEAL --- */
+.hero { animation: fadeUp 0.6s ease-out both; }
+.hero > div:first-child { animation: slideInRight 0.6s ease-out both; }
+.hero > div:last-child { animation: slideInRight 0.7s ease-out both; }
+.hero .badge { animation: fadeIn 0.5s 0.2s ease-out both; }
+.hero h1 { animation: fadeUp 0.6s 0.3s ease-out both; }
+.hero p { animation: fadeIn 0.6s 0.4s ease-out both; }
+.hero-buttons { animation: fadeUp 0.5s 0.5s ease-out both; }
+.home-bento { animation: fadeUp 0.6s ease-out both; }
+.home-bento > .content-container > div:first-child { animation: fadeUp 0.6s 0.1s ease-out both; }
+.home-bento-cards > div { animation: fadeUp 0.5s ease-out both; }
+.home-bento-cards > div:nth-child(1) { animation-delay: 0.15s; }
+.home-bento-cards > div:nth-child(2) { animation-delay: 0.25s; }
+.home-bento-cards > div:nth-child(3) { animation-delay: 0.35s; }
+.home-bento-cards > div:nth-child(4) { animation-delay: 0.45s; }
+.home-footer { animation: fadeUp 0.6s ease-out both; }
+.home-footer > .content-container > div:first-child { animation: fadeIn 0.6s 0.1s ease-out both; }
+.home-footer > .content-container > div:last-child { animation: slideInRight 0.6s 0.2s ease-out both; }
+.home-footer .content-container:last-child { animation: fadeIn 0.6s 0.3s ease-out both; }
+
+/* Hover lift for bento feature cards */
+.home-bento-cards > div {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.home-bento-cards > div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* Hero match card: subtle hover lift */
+.home-match-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.home-match-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
 /* --- NAVBAR --- */
 nav {
   display: flex;
@@ -371,6 +409,28 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   /* Dashboard header: stack title + logout on mobile */
   .dash-header { align-items: flex-start !important; }
   .dash-header .btn-secondary { width: 100% !important; }
+
+  /* Homepage hero match card: stack players on mobile */
+  .home-match-card { padding: 20px !important; }
+  .home-match-card-header { flex-direction: column !important; gap: 4px !important; align-items: flex-start !important; }
+  .home-match-players { flex-direction: column !important; gap: 16px !important; }
+  .home-match-players > div { text-align: center !important; }
+  .home-match-players > div:nth-child(2) { order: -1; }
+  .home-match-players > div:nth-child(1) { margin-left: auto !important; }
+  .home-match-players > div:nth-child(3) { margin-left: 0 !important; }
+  .home-match-progress [style*="justify-content: space-between"] { flex-direction: column !important; gap: 4px !important; align-items: flex-start !important; }
+
+  /* Homepage bento section: stack */
+  .home-bento { padding: 40px 16px !important; }
+  .home-bento-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .home-bento h2 { font-size: 36px !important; }
+  .home-bento-cards { grid-template-columns: 1fr !important; }
+
+  /* Homepage footer: stack */
+  .home-footer { padding: 40px 16px 24px !important; }
+  .home-footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .home-footer [style*="justify-content: flex-end"] { justify-content: flex-start !important; }
+  .home-footer [style*="gap: 40px"] { flex-wrap: wrap !important; gap: 24px !important; }
 
   /* Modals */
   .modal-box { max-width: 100% !important; padding: 20px !important; margin: 8px !important; }
