@@ -421,3 +421,65 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .split-right { padding: 40px 20px; }
   .split-right h1 { font-size: 32px; margin-bottom: 24px; }
 }
+/* --- SPLIT LAYOUT FIX (Login / Register) --- */
+.split-layout {
+  display: grid !important;
+  grid-template-columns: 40% 60% !important;
+  min-height: calc(100vh - 80px) !important;
+  width: 100% !important;
+}
+
+.split-left {
+  background: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  padding: 80px 60px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.split-left h1 {
+  font-size: 64px !important;
+  line-height: 1.05 !important;
+  margin-bottom: 24px !important;
+}
+
+.split-left p {
+  color: #a0a5a2 !important;
+  line-height: 1.6 !important;
+  font-size: 15px !important;
+  max-width: 90% !important;
+}
+
+.split-right {
+  padding: 80px 60px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  background: var(--bg-cream) !important;
+}
+
+.split-right h1 {
+  font-size: 48px !important;
+  margin-bottom: 32px !important;
+}
+
+/* Mobile fallback */
+@media (max-width: 768px) {
+  .split-layout {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+  .split-left {
+    padding: 40px 20px !important;
+  }
+  .split-left h1 {
+    font-size: 40px !important;
+  }
+  .split-right {
+    padding: 40px 20px !important;
+  }
+  .split-right h1 {
+    font-size: 32px !important;
+  }
+}
