@@ -243,7 +243,7 @@ nav {
 
 
 /* =========================================================================
-   MOBILE RESPONSIVENESS ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â EVERYTHING
+   MOBILE RESPONSIVENESS ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â EVERYTHING
    ========================================================================= */
 
 /* Prevent any horizontal overflow globally */
@@ -302,7 +302,7 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .page-header h1 { font-size: 36px !important; }
   .page-header p { font-size: 13px !important; margin-bottom: 24px !important; }
 
-  /* All grids ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ single column */
+  /* All grids ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ single column */
   .tournament-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .results-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .dash-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
@@ -317,7 +317,7 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
 
   /* Forms */
   .form-group input, .form-group select { font-size: 16px !important; padding: 14px !important; }
-  .toggle-password { top: 46px !important; }
+  
 
   /* Split layouts: stack */
   
@@ -493,4 +493,27 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .split-left h1 { font-size: 38px; }
   .split-right { padding: 40px 30px; }
   .split-right h1 { font-size: 28px; }
+}
+/* --- PASSWORD TOGGLE: anchored to input's bottom-right --- */
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper input {
+  padding-right: 60px !important;
+}
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: auto;
+  bottom: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-text);
+  cursor: pointer;
+  user-select: none;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+.toggle-password:hover {
+  color: var(--text-dark);
 }
