@@ -53,7 +53,7 @@ export default function Dashboard() {
   return (
     <main className="page-section">
       <div className="content-container">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40, flexWrap: 'wrap', gap: 12 }}>
+        <div className="dash-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40, flexWrap: 'wrap', gap: 12 }}>
           <div className="page-header" style={{ margin: 0 }}>
             <div className="badge">Player Dashboard</div>
             <h1>Welcome, {user.username}</h1>
@@ -79,8 +79,8 @@ export default function Dashboard() {
               </div>
               {regs.map((r, i) => (
                 <div className="table-row" key={i} style={{ gridTemplateColumns: '1fr 150px 150px' }}>
-                  <div><strong>{r.name}</strong></div>
-                  <div>
+                  <div data-label="Tournament"><strong>{r.name}</strong></div>
+                  <div data-label="Your Entry">
                     <span style={{
                       padding: '4px 8px', borderRadius: 4, fontSize: 12, fontWeight: 600,
                       background: r.status === 'approved' ? 'var(--lime-green)' : r.status === 'rejected' ? '#ffd6d6' : '#fff3cd',
@@ -89,7 +89,7 @@ export default function Dashboard() {
                       {r.status.toUpperCase()}
                     </span>
                   </div>
-                  <div style={{ color: 'var(--gray-text)', fontSize: 13 }}>{(r.tournament_status || '').toUpperCase()}</div>
+                  <div data-label="Tournament Status" style={{ color: 'var(--gray-text)', fontSize: 13 }}>{(r.tournament_status || '').toUpperCase()}</div>
                 </div>
               ))}
             </div>
@@ -108,12 +108,12 @@ export default function Dashboard() {
                 const isWinner = m.winner_id === user.id;
                 return (
                   <div className="table-row" key={m.id} style={{ gridTemplateColumns: '80px 1fr 120px 1fr' }}>
-                    <div>R{m.round}</div>
-                    <div><strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'BYE'}</strong></div>
-                    <div style={{ fontWeight: 700, color: isWinner ? '#2a9d4f' : 'var(--gray-text)' }}>
+                    <div data-label="Round">R{m.round}</div>
+                    <div data-label="Match"><strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'BYE'}</strong></div>
+                    <div data-label="Score" style={{ fontWeight: 700, color: isWinner ? '#2a9d4f' : 'var(--gray-text)' }}>
                       {m.status === 'completed' ? m.player1_score + ' : ' + m.player2_score : '- : -'}
                     </div>
-                    <div style={{ color: 'var(--gray-text)' }}>{m.tournament_name}</div>
+                    <div data-label="Tournament" style={{ color: 'var(--gray-text)' }}>{m.tournament_name}</div>
                   </div>
                 );
               })}

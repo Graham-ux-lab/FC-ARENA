@@ -327,12 +327,23 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   
   .split-right h1 { font-size: 32px !important; margin-bottom: 24px !important; }
 
-  /* Tables: turn each row into a card */
+/* Tables: turn each row into a card */
   .data-table { border: none !important; background: transparent !important; }
   .table-row { display: flex !important; flex-direction: column !important; align-items: flex-start !important; padding: 16px !important; margin-bottom: 12px !important; border: 1px solid var(--border-light) !important; background: #fff !important; border-radius: 6px; gap: 4px !important; }
   [data-theme="dark"] .table-row { background: #16201c !important; }
   .table-row.header { display: none !important; }
   .table-row > div { width: 100% !important; font-size: 13px !important; }
+  .table-row > div[data-label]::before {
+    content: attr(data-label) !important;
+    display: block !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--gray-text) !important;
+    margin-bottom: 2px !important;
+  }
+  .table-row > div[data-label]:empty::before { display: none !important; }
 
   /* Leaderboard on mobile: Pos | Player | Pts */
   .leaderboard-header, .leaderboard-row {
@@ -352,10 +363,14 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .leaderboard-row > div:nth-child(2) strong { font-size: 14px !important; }
   .leaderboard-row > div:nth-child(2) span { font-size: 10px !important; }
 
-  /* Stat cards */
+/* Stat cards */
   .stat-card { padding: 16px !important; }
   .stat-value { font-size: 28px !important; }
   .stat-label { font-size: 10px !important; }
+
+  /* Dashboard header: stack title + logout on mobile */
+  .dash-header { align-items: flex-start !important; }
+  .dash-header .btn-secondary { width: 100% !important; }
 
   /* Modals */
   .modal-box { max-width: 100% !important; padding: 20px !important; margin: 8px !important; }
