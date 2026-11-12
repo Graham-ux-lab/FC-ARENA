@@ -58,24 +58,43 @@ export default function Admin() {
 
   useEffect(() => { loadData(); }, []);
 
+  const setUserStatus = async (id, status) => {
+    if (status === 'banned' && !confirm('Ban this user? They will not be able to log in.')) return;
+    await fetch('/api/admin/user/' + id + '/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ status })
+    });
+    loadData();
+  };
+
+  const approveReg = async (tid, uid) => {
+    await fetch('/api/admin/approve-registration/' + tid + '_' + uid, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    loadData();
+    if (selectedTid === tid) loadTournamentDetails(tid);
+  };
+  
+  const rejectReg = async (tid, uid) => {
+    if (!confirm('Reject this registration?')) return;
+    await fetch('/api/admin/reject-registration/' + tid + '_' + uid, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    loadData();
+  };
+
   const createTournament = async (e) => {
     e.preventDefault();
     setMsg('Creating...');
-    
     const res = await fetch('/api/admin/tournament', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
       body: JSON.stringify(newTournament)
     });
-    
     const data = await res.json();
-    
     if (res.ok) {
       setMsg('Tournament created successfully!');
       setNewTournament({ name: '', max_players: 8, entry_fee: 0 });
       loadData();
     } else {
-      setMsg('Error: ' + data.error); 
+      setMsg('Error: ' + data.error);
     }
   };
 
@@ -135,6 +154,13 @@ export default function Admin() {
 
   if (loading) return <main className="page-section"><div className="content-container"><p>Loading...</p></div></main>;
 
+  const filteredUsers = allUsers.filter(u => {
+    const q = search.toLowerCase();
+    const matchesSearch = !q || u.username.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || (u.ea_id || '').toLowerCase().includes(q);
+    const matchesStatus = filterStatus === 'all' || u.status === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <main className="page-section">
       <div className="content-container">
@@ -154,6 +180,90 @@ export default function Admin() {
         </div>
 
         {msg && <div style={{ padding: 16, marginBottom: 24, background: 'var(--lime-green)', borderRadius: 4, fontWeight: 600 }}>{msg}</div>}
+
+        {tab === 'overview' && (
+          <>
+            <div className="dash-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              <div className="stat-card"><span className="stat-value">{pendingRegs.length}</span><span className="stat-label">Pending Regs</span></div>
+              <div className="stat-card"><span className="stat-value">{tournaments.length}</span><span className="stat-label">Tournaments</span></div>
+              <div className="stat-card"><span className="stat-value">{tournaments.filter(t => t.status === 'ongoing').length}</span><span className="stat-label">Live Now</span></div>
+            </div>
+
+            <div className="card" style={{ marginBottom: 32 }}>
+              <h3 style={{ marginBottom: 24 }}>Pending Registrations</h3>
+              {pendingRegs.map(r => (
+                <div key={r.tournament_id + r.user_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 12, border: '1px solid var(--border-light)', background: '#f9f8f5', marginBottom: 8, flexWrap: 'wrap', gap: 6 }}>
+                  <div style={{ flex: 1 }}>
+                    <strong>{r.username}</strong><br/>
+                    <span style={{ fontSize: 12, color: 'var(--gray-text)' }}>for {r.tournament_name}</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button onClick={() => approveReg(r.tournament_id, r.user_id)} className="btn-primary" style={{ padding: '6px 12px', fontSize: 12 }}>Approve</button>
+                    <button onClick={() => rejectReg(r.tournament_id, r.user_id)} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12, color: 'red', borderColor: 'red' }}>Reject</button>
+                  </div>
+                </div>
+              ))}
+              {pendingRegs.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No pending registrations.</p>}
+            </div>
+          </>
+        )}
+
+        {tab === 'users' && (
+          <div className="card">
+            <div style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
+              <input
+                type="text"
+                placeholder="Search username, email, EA ID..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                style={{ flex: 1, minWidth: 240, padding: 10, border: '1px solid var(--border-light)', fontSize: 14 }}
+              />
+              <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ padding: 10, border: '1px solid var(--border-light)', fontSize: 14 }}>
+                <option value="all">All Statuses</option>
+                <option value="approved">Approved</option>
+                <option value="banned">Banned</option>
+              </select>
+            </div>
+
+            <div className="data-table">
+              <div className="table-row header" style={{ gridTemplateColumns: '1fr 1fr 100px 100px 160px' }}>
+                <div>Player</div><div>Email</div><div>Platform</div><div>Status</div><div>Actions</div>
+              </div>
+              {filteredUsers.map(u => (
+                <div className="table-row" key={u.id} style={{ gridTemplateColumns: '1fr 1fr 100px 100px 160px', alignItems: 'center' }}>
+                  <div>
+                    <strong>{u.username}</strong><br/>
+                    <span style={{ fontSize: 11, color: 'var(--gray-text)' }}>{u.ea_id}</span>
+                  </div>
+                  <div style={{ fontSize: 13 }}>{u.email}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600 }}>{u.platform.toUpperCase()}</div>
+                  <div>
+                    <span style={{
+                      padding: '3px 8px', borderRadius: 4, fontSize: 11, fontWeight: 700,
+                      background: u.status === 'approved' ? 'var(--lime-green)' : u.status === 'banned' ? '#ffd6d6' : '#fff3cd',
+                      color: u.status === 'approved' ? 'var(--bg-dark)' : u.status === 'banned' ? 'red' : '#856404'
+                    }}>
+                      {u.status.toUpperCase()}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    {u.status !== 'approved' && u.role !== 'admin' && (
+                      <button onClick={() => setUserStatus(u.id, 'approved')} className="btn-primary" style={{ padding: '4px 10px', fontSize: 11 }}>Approve</button>
+                    )}
+                    {u.status !== 'banned' && u.role !== 'admin' && (
+                      <button onClick={() => setUserStatus(u.id, 'banned')} className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11, color: 'red', borderColor: 'red' }}>Ban</button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {filteredUsers.length === 0 && (
+                <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 40, textAlign: 'center', color: 'var(--gray-text)' }}>
+                  No users found.
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {tab === 'tournaments' && (
           <>
