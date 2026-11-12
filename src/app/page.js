@@ -15,45 +15,43 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <div className="card home-match-card" style={{ background: '#1b2621', color: '#fff', borderColor: '#2a3a33' }}>
-            <div className="card-header home-match-card-header">
-              <span>Semi-Final Â· Match 02</span>
+          <div className="card" style={{ background: '#1b2621', color: '#fff', borderColor: '#2a3a33' }}>
+            <div className="card-header">
+              <span>Semi-Final · Match 02</span>
               <span style={{ color: 'var(--lime-green)' }}>21:30 CET</span>
             </div>
-            <div className="home-match-players">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '40px 0' }}>
               <div>
                 <div style={{ width: 48, height: 48, background: 'var(--bg-cream)', color: 'var(--bg-dark)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', marginBottom: 12 }}>NM</div>
                 <h3 style={{ margin: 0, fontSize: 20 }}>NOMAD</h3>
               </div>
               <div style={{ fontSize: 32, fontFamily: 'Oswald', color: '#3a4a43' }}>VS</div>
-              <div>
+              <div style={{ textAlign: 'right' }}>
                 <div style={{ width: 48, height: 48, background: 'var(--bg-cream)', color: 'var(--bg-dark)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', marginBottom: 12, marginLeft: 'auto' }}>KR</div>
                 <h3 style={{ margin: 0, fontSize: 20 }}>Kairo</h3>
               </div>
             </div>
-            <div className="home-match-progress">
-              <div style={{ fontSize: 12, display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span>Winner advances to</span>
-                <span style={{ fontWeight: 'bold' }}>Grand final</span>
-              </div>
-              <div style={{ height: 4, background: '#3a4a43', borderRadius: 2, overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: '72%', background: 'var(--lime-green)' }}></div>
-              </div>
+            <div style={{ fontSize: 12, display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span>Winner advances to</span>
+              <span style={{ fontWeight: 'bold' }}>Grand final</span>
+            </div>
+            <div style={{ height: 4, background: '#3a4a43', borderRadius: 2, overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: '72%', background: 'var(--lime-green)' }}></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* BENTO FEATURE SECTION */}
-      <section className="home-bento" style={{ background: '#e4e0d8', padding: '80px 40px' }}>
-        <div className="content-container home-bento-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+      <section style={{ background: '#e4e0d8', padding: '80px 40px' }}>
+        <div className="content-container" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
           <div>
             <div className="badge" style={{ color: 'var(--gray-text)' }}>Built for match night</div>
             <h2 style={{ fontSize: '56px', lineHeight: '1.05', marginBottom: '24px' }}>Compete on<br/>your terms.</h2>
             <p style={{ fontSize: '15px', color: 'var(--gray-text)', marginBottom: '32px', maxWidth: '90%' }}>From first bracket to the finals stage, everything you need to show up ready lives in one place.</p>
             <Link href="/register" className="btn-primary" style={{ background: '#1b2621', color: '#fff' }}>Create your player profile</Link>
           </div>
-          <div className="home-bento-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             {[
               { title: 'Real competition', desc: 'Formats built for fair, focused play.' },
               { title: 'Know your next match', desc: 'Fixtures, times and results in one view.' },
@@ -70,8 +68,8 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="home-footer" style={{ background: '#1b2621', color: '#f3f1eb', padding: '60px 40px 30px' }}>
-        <div className="content-container home-footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '60px', padding: 0 }}>
+      <footer style={{ background: '#1b2621', color: '#f3f1eb', padding: '60px 40px 30px' }}>
+        <div className="content-container" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '60px', padding: 0 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
               <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M12 2L15 5H18L21 8V12C21 15.5 18 18 12 22C6 18 3 15.5 3 12V8L6 5H9L12 2Z" fill="#f3f1eb"/><circle cx="12" cy="12" r="4" fill="#ccf380"/></svg>
@@ -95,7 +93,8 @@ export default function Home() {
           </div>
         </div>
         <div className="content-container" style={{ borderTop: '1px solid #2a3a33', marginTop: '40px', padding: '20px 0 0 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: '#5a625e' }}>
-          <div>Â© 2026 XP LOUNGE</div>
+          <div>Sample-data experience · Tournament information is illustrative and not live.</div>
+          <div>© 2026 XP LOUNGE</div>
         </div>
       </footer>
     </main>
