@@ -592,3 +592,28 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
 .toggle-password:hover {
   color: var(--text-dark);
 }
+/* --- SKELETON LOADING --- */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton {
+  background: #e2dfd4;
+  background-image: linear-gradient(90deg, #e2dfd4 0px, #f3f1eb 40px, #e2dfd4 80px);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear forwards;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .skeleton {
+  background: #1e2b25;
+  background-image: linear-gradient(90deg, #1e2b25 0px, #2a3a33 40px, #1e2b25 80px);
+}
+
+/* Skeleton shapes */
+.sk-title { height: 32px; width: 60%; margin-bottom: 12px; }
+.sk-text { height: 16px; width: 90%; margin-bottom: 8px; }
+.sk-box { height: 100px; width: 100%; margin-bottom: 16px; }
+.sk-button { height: 44px; width: 100%; margin-top: 16px; }
+.sk-circle { height: 40px; width: 40px; border-radius: 50%; }

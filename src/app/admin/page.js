@@ -152,7 +152,38 @@ export default function Admin() {
     }
   };
 
-  if (loading) return <main className="page-section"><div className="content-container"><p>Loading...</p></div></main>;
+  if (loading) return (
+    <main className="page-section">
+      <div className="content-container">
+        <div className="page-header">
+          <div className="skeleton" style={{ height: 16, width: 100, marginBottom: 12 }}></div>
+          <div className="skeleton" style={{ height: 48, width: 300 }}></div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 24, borderBottom: '1px solid var(--border-light)', paddingBottom: 12 }}>
+          {Array(3).fill(0).map((_, i) => (
+            <div key={i} className="skeleton" style={{ height: 36, width: 100 }}></div>
+          ))}
+        </div>
+
+        <div className="dash-grid">
+          {Array(3).fill(0).map((_, i) => (
+            <div className="stat-card" key={i}>
+              <div className="skeleton" style={{ height: 42, width: 60, marginBottom: 8 }}></div>
+              <div className="skeleton" style={{ height: 16, width: 80 }}></div>
+            </div>
+          ))}
+        </div>
+
+        <div className="card">
+          <div className="skeleton" style={{ height: 28, width: 200, marginBottom: 24 }}></div>
+          {Array(3).fill(0).map((_, i) => (
+            <div key={i} className="skeleton" style={{ height: 60, width: '100%', marginBottom: 12 }}></div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
 
   const filteredUsers = allUsers.filter(u => {
     const q = search.toLowerCase();
@@ -211,13 +242,7 @@ export default function Admin() {
         {tab === 'users' && (
           <div className="card">
             <div style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
-              <input
-                type="text"
-                placeholder="Search username, email, EA ID..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{ flex: 1, minWidth: 240, padding: 10, border: '1px solid var(--border-light)', fontSize: 14 }}
-              />
+              <input type="text" placeholder="Search username, email, EA ID..." value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1, minWidth: 240, padding: 10, border: '1px solid var(--border-light)', fontSize: 14 }} />
               <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ padding: 10, border: '1px solid var(--border-light)', fontSize: 14 }}>
                 <option value="all">All Statuses</option>
                 <option value="approved">Approved</option>
@@ -238,11 +263,7 @@ export default function Admin() {
                   <div style={{ fontSize: 13 }}>{u.email}</div>
                   <div style={{ fontSize: 12, fontWeight: 600 }}>{u.platform.toUpperCase()}</div>
                   <div>
-                    <span style={{
-                      padding: '3px 8px', borderRadius: 4, fontSize: 11, fontWeight: 700,
-                      background: u.status === 'approved' ? 'var(--lime-green)' : u.status === 'banned' ? '#ffd6d6' : '#fff3cd',
-                      color: u.status === 'approved' ? 'var(--bg-dark)' : u.status === 'banned' ? 'red' : '#856404'
-                    }}>
+                    <span style={{ padding: '3px 8px', borderRadius: 4, fontSize: 11, fontWeight: 700, background: u.status === 'approved' ? 'var(--lime-green)' : '#ffd6d6', color: u.status === 'approved' ? 'var(--bg-dark)' : 'red' }}>
                       {u.status.toUpperCase()}
                     </span>
                   </div>
@@ -257,9 +278,7 @@ export default function Admin() {
                 </div>
               ))}
               {filteredUsers.length === 0 && (
-                <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 40, textAlign: 'center', color: 'var(--gray-text)' }}>
-                  No users found.
-                </div>
+                <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 40, textAlign: 'center', color: 'var(--gray-text)' }}>No users found.</div>
               )}
             </div>
           </div>
@@ -317,7 +336,7 @@ export default function Admin() {
                 <h4 style={{ marginBottom: 16 }}>Registered Players ({tRegs.length})</h4>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
                   {tRegs.map((r, i) => (
-                    <div key={i} style={{ padding: '6px 12px', background: r.status === 'approved' ? 'var(--lime-green)' : r.status === 'rejected' ? '#ffd6d6' : '#fff3cd', borderRadius: 4, fontSize: 13 }}>
+                    <div key={i} style={{ padding: '6px 12px', background: r.status === 'approved' ? 'var(--lime-green)' : '#fff3cd', borderRadius: 4, fontSize: 13 }}>
                       {r.username} ({r.status})
                     </div>
                   ))}
@@ -334,9 +353,7 @@ export default function Admin() {
                     return (
                       <div className="table-row" key={m.id} style={{ gridTemplateColumns: '60px 1fr 100px 240px', alignItems: 'center' }}>
                         <div>R{m.round}</div>
-                        <div style={{ fontSize: 13 }}>
-                          <strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'TBD'}</strong>
-                        </div>
+                        <div style={{ fontSize: 13 }}><strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'TBD'}</strong></div>
                         <div style={{ fontWeight: 600 }}>{m.status === 'completed' ? m.player1_score + ' : ' + m.player2_score : '- : -'}</div>
                         <div>
                           {m.player1_id && m.player2_id && (
@@ -362,7 +379,7 @@ export default function Admin() {
                       </div>
                     );
                   })}
-                  {tMatches.length === 0 && <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 20, textAlign: 'center', color: 'var(--gray-text)' }}>No matches yet. Click "Generate Bracket".</div>}
+                  {tMatches.length === 0 && <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 20, textAlign: 'center', color: 'var(--gray-text)' }}>No matches yet.</div>}
                 </div>
               </div>
             )}
