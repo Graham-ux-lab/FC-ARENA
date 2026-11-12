@@ -7,11 +7,23 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('fifa_token');
     setIsLoggedIn(!!token);
+
+    if (token) {
+      // Check if admin
+      fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } })
+        .then(res => res.json())
+        .then(data => {
+          if (data.role === 'admin') setIsAdmin(true);
+        })
+        .catch(() => {});
+    }
+
     const savedTheme = localStorage.getItem('fifa_theme');
     if (savedTheme === 'dark') {
       setDarkMode(true);
@@ -34,6 +46,7 @@ export default function Navbar() {
   const logout = () => {
     localStorage.removeItem('fifa_token');
     setIsLoggedIn(false);
+    setIsAdmin(false);
     router.push('/');
   };
 
@@ -59,6 +72,7 @@ export default function Navbar() {
         </button>
         {isLoggedIn ? (
           <>
+            {isAdmin && <Link href="/admin" className="btn-signin" style={{ color: 'var(--lime-green)' }}>Admin</Link>}
             <Link href="/dashboard" className="btn-signin">Dashboard</Link>
             <button onClick={logout} className="btn-register">Logout</button>
           </>

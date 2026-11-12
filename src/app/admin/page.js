@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 export default function Admin() {
   const router = useRouter();
   const [tab, setTab] = useState('overview');
-  const [pendingUsers, setPendingUsers] = useState([]);
   const [pendingRegs, setPendingRegs] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [tournaments, setTournaments] = useState([]);
-  const [newTournament, setNewTournament] = useState({ name: '', max_players: 8 });
+  const [newTournament, setNewTournament] = useState({ name: '', max_players: 8, entry_fee: 0 });
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -34,13 +33,11 @@ export default function Admin() {
       const me = await meRes.json();
       if (me.role !== 'admin') { router.push('/'); return; }
 
-      const [pu, pr, au, t] = await Promise.all([
-        fetch('/api/admin/pending', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => r.json()),
+      const [pr, au, t] = await Promise.all([
         fetch('/api/admin/registrations', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => r.json()),
         fetch('/api/admin/users', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => r.json()),
         fetch('/api/tournaments/public').then(r => r.json())
       ]);
-      setPendingUsers(pu);
       setPendingRegs(pr);
       setAllUsers(au);
       setTournaments(t);
@@ -63,15 +60,6 @@ export default function Admin() {
 
   useEffect(() => { loadData(); }, []);
 
-  const approveUser = async (id) => {
-    await fetch('/api/admin/approve/' + id, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
-    loadData();
-  };
-  const rejectUser = async (id) => {
-    if (!confirm('Reject this user?')) return;
-    await fetch('/api/admin/reject/' + id, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
-    loadData();
-  };
   const setUserStatus = async (id, status) => {
     if (status === 'banned' && !confirm('Ban this user? They will not be able to log in.')) return;
     await fetch('/api/admin/user/' + id + '/status', {
@@ -87,6 +75,7 @@ export default function Admin() {
     loadData();
     if (selectedTid === tid) loadTournamentDetails(tid);
   };
+  
   const rejectReg = async (tid, uid) => {
     if (!confirm('Reject this registration?')) return;
     await fetch('/api/admin/reject-registration/' + tid + '_' + uid, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
@@ -102,8 +91,10 @@ export default function Admin() {
     });
     if (res.ok) {
       setMsg('Tournament created!');
-      setNewTournament({ name: '', max_players: 8 });
+      setNewTournament({ name: '', max_players: 8, entry_fee: 0 });
       loadData();
+    } else {
+      setMsg('Failed to create tournament.');
     }
   };
 
@@ -202,46 +193,26 @@ export default function Admin() {
         {tab === 'overview' && (
           <>
             <div className="dash-grid">
-              <div className="stat-card"><span className="stat-value">{pendingUsers.length}</span><span className="stat-label">Pending Users</span></div>
               <div className="stat-card"><span className="stat-value">{pendingRegs.length}</span><span className="stat-label">Pending Regs</span></div>
               <div className="stat-card"><span className="stat-value">{tournaments.length}</span><span className="stat-label">Tournaments</span></div>
               <div className="stat-card"><span className="stat-value">{tournaments.filter(t => t.status === 'ongoing').length}</span><span className="stat-label">Live Now</span></div>
             </div>
 
-            <div className="admin-grid">
-              <div className="card">
-                <h3 style={{ marginBottom: 24 }}>Pending Users</h3>
-                {pendingUsers.map(u => (
-                  <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 12, border: '1px solid var(--border-light)', background: '#f9f8f5', marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
-                    <div style={{ flex: 1 }}>
-                      <strong>{u.username}</strong><br/>
-                      <span style={{ fontSize: 12, color: 'var(--gray-text)' }}>{u.email}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      <button onClick={() => approveUser(u.id)} className="btn-primary" style={{ padding: '6px 12px', fontSize: 12 }}>Approve</button>
-                      <button onClick={() => rejectUser(u.id)} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12, color: 'red', borderColor: 'red' }}>Reject</button>
-                    </div>
+            <div className="card" style={{ marginBottom: 32 }}>
+              <h3 style={{ marginBottom: 24 }}>Pending Registrations</h3>
+              {pendingRegs.map(r => (
+                <div key={r.tournament_id + r.user_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 12, border: '1px solid var(--border-light)', background: '#f9f8f5', marginBottom: 8, flexWrap: 'wrap', gap: 6 }}>
+                  <div style={{ flex: 1 }}>
+                    <strong>{r.username}</strong><br/>
+                    <span style={{ fontSize: 12, color: 'var(--gray-text)' }}>for {r.tournament_name}</span>
                   </div>
-                ))}
-                {pendingUsers.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No pending users.</p>}
-              </div>
-
-              <div className="card">
-                <h3 style={{ marginBottom: 24 }}>Pending Registrations</h3>
-                {pendingRegs.map(r => (
-                  <div key={r.tournament_id + r.user_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 12, border: '1px solid var(--border-light)', background: '#f9f8f5', marginBottom: 8, flexWrap: 'wrap', gap: 6 }}>
-                    <div style={{ flex: 1 }}>
-                      <strong>{r.username}</strong><br/>
-                      <span style={{ fontSize: 12, color: 'var(--gray-text)' }}>for {r.tournament_name}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      <button onClick={() => approveReg(r.tournament_id, r.user_id)} className="btn-primary" style={{ padding: '6px 12px', fontSize: 12 }}>Approve</button>
-                      <button onClick={() => rejectReg(r.tournament_id, r.user_id)} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12, color: 'red', borderColor: 'red' }}>Reject</button>
-                    </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button onClick={() => approveReg(r.tournament_id, r.user_id)} className="btn-primary" style={{ padding: '6px 12px', fontSize: 12 }}>Approve</button>
+                    <button onClick={() => rejectReg(r.tournament_id, r.user_id)} className="btn-secondary" style={{ padding: '6px 12px', fontSize: 12, color: 'red', borderColor: 'red' }}>Reject</button>
                   </div>
-                ))}
-                {pendingRegs.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No pending registrations.</p>}
-              </div>
+                </div>
+              ))}
+              {pendingRegs.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No pending registrations.</p>}
             </div>
           </>
         )}
@@ -258,7 +229,6 @@ export default function Admin() {
               />
               <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ padding: 10, border: '1px solid var(--border-light)', fontSize: 14 }}>
                 <option value="all">All Statuses</option>
-                <option value="pending">Pending</option>
                 <option value="approved">Approved</option>
                 <option value="rejected">Rejected</option>
                 <option value="banned">Banned</option>
@@ -318,19 +288,24 @@ export default function Admin() {
                   <label>Max Players</label>
                   <input type="number" min="2" value={newTournament.max_players} onChange={e => setNewTournament({...newTournament, max_players: parseInt(e.target.value)})} required />
                 </div>
+                {/* THE ENTRY FEE INPUT */}
+                <div className="form-group" style={{ flex: 1, marginBottom: 0, minWidth: 100 }}>
+                  <label>Entry Fee (KES)</label>
+                  <input type="number" min="0" value={newTournament.entry_fee} onChange={e => setNewTournament({...newTournament, entry_fee: parseInt(e.target.value) || 0})} required />
+                </div>
                 <button type="submit" className="btn-primary" style={{ height: 42 }}>Create</button>
               </form>
             </div>
 
             <div className="data-table" style={{ marginBottom: 32 }}>
               <div className="table-row header" style={{ gridTemplateColumns: '2fr 1fr 1fr 160px' }}>
-                <div>Name</div><div>Status</div><div>Max</div><div>Actions</div>
+                <div>Name</div><div>Status</div><div>Fee (KES)</div><div>Actions</div>
               </div>
               {tournaments.map(t => (
                 <div className="table-row" key={t.id} style={{ gridTemplateColumns: '2fr 1fr 1fr 160px', alignItems: 'center' }}>
                   <div><strong>{t.name}</strong></div>
                   <div><span style={{ fontWeight: 600, color: t.status === 'ongoing' ? 'red' : 'inherit' }}>{t.status.toUpperCase()}</span></div>
-                  <div>{t.max_players}</div>
+                  <div>{t.entry_fee || 0}</div>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button onClick={() => loadTournamentDetails(t.id)} className="btn-secondary" style={{ padding: '6px 10px', fontSize: 11 }}>Manage</button>
                     <button onClick={() => deleteTournament(t.id, t.name)} className="btn-secondary" style={{ padding: '6px 10px', fontSize: 11, color: 'red', borderColor: 'red' }}>Delete</button>
@@ -370,14 +345,15 @@ export default function Admin() {
                     return (
                       <div className="table-row" key={m.id} style={{ gridTemplateColumns: '60px 1fr 100px 240px', alignItems: 'center' }}>
                         <div>R{m.round}</div>
+                        {/* PLAYER NAMES INSTEAD OF TBD */}
                         <div style={{ fontSize: 13 }}>
-  <strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'TBD'}</strong>
-</div>
+                          <strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'TBD'}</strong>
+                        </div>
                         <div style={{ fontWeight: 600 }}>{m.status === 'completed' ? m.player1_score + ' : ' + m.player2_score : '- : -'}</div>
                         <div>
                           {m.player1_id && m.player2_id && (
                             isEditing ? (
-                              <div className="score-inputs" style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                              <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
                                 <input type="number" style={{ width: 42, padding: 4 }} value={scoreInput.p1} onChange={e => setScoreInput({...scoreInput, p1: e.target.value})} />
                                 <input type="number" style={{ width: 42, padding: 4 }} value={scoreInput.p2} onChange={e => setScoreInput({...scoreInput, p2: e.target.value})} />
                                 <button onClick={() => submitScore(m.id, scoreInput.isEdit)} className="btn-primary" style={{ padding: '4px 8px', fontSize: 11 }}>Save</button>
@@ -401,57 +377,11 @@ export default function Admin() {
                       </div>
                     );
                   })}
-                  {tMatches.length === 0 && <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 20, textAlign: 'center', color: 'var(--gray-text)' }}>No matches yet.</div>}
+                  {tMatches.length === 0 && <div className="table-row" style={{ gridTemplateColumns: '1fr', padding: 20, textAlign: 'center', color: 'var(--gray-text)' }}>No matches yet. Click "Generate Bracket".</div>}
                 </div>
               </div>
             )}
           </>
-        )}
-
-        {seedModal && (
-          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 20 }}>
-            <div className="card" style={{ width: '100%', maxWidth: 400, background: 'var(--bg-cream)' }}>
-              <h3 style={{ marginBottom: 8 }}>Generate Bracket</h3>
-              <p style={{ fontSize: 14, color: 'var(--gray-text)', marginBottom: 24 }}>How should players be paired?</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <button onClick={() => generateBracket('random')} className="btn-primary" style={{ padding: 16, justifyContent: 'flex-start' }}>
-                  <div style={{ textAlign: 'left' }}>
-                    <strong style={{ display: 'block' }}>Random Shuffle</strong>
-                    <span style={{ fontSize: 12, opacity: 0.7 }}>Fast and fair ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â everyone has an equal chance</span>
-                  </div>
-                </button>
-                <button onClick={() => generateBracket('seeded')} className="btn-secondary" style={{ padding: 16, justifyContent: 'flex-start', color: 'var(--text-dark)', borderColor: 'var(--border-light)' }}>
-                  <div style={{ textAlign: 'left' }}>
-                    <strong style={{ display: 'block' }}>Seeded (Ranked)</strong>
-                    <span style={{ fontSize: 12, color: 'var(--gray-text)' }}>Top players face bottom players</span>
-                  </div>
-                </button>
-                <button onClick={() => setSeedModal(null)} className="btn-secondary" style={{ padding: 10, color: 'var(--gray-text)', borderColor: 'var(--border-light)' }}>Cancel</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {auditMatch && (
-          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 20 }} onClick={() => setAuditMatch(null)}>
-            <div className="card" style={{ width: '100%', maxWidth: 700, background: 'var(--bg-cream)', maxHeight: '80vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <h3>Audit Log</h3>
-                <button onClick={() => setAuditMatch(null)} style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer' }}>ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</button>
-              </div>
-              {auditData.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No edits recorded for this match.</p>}
-              {auditData.map((e, i) => (
-                <div key={i} style={{ padding: 12, border: '1px solid var(--border-light)', background: '#fff', marginBottom: 8 }}>
-                  <div style={{ fontSize: 12, color: 'var(--gray-text)', marginBottom: 4 }}>
-                    {new Date(e.edited_at).toLocaleString()} ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· by <strong>{e.editor}</strong>
-                  </div>
-                  <div style={{ fontSize: 14 }}>
-                    Score: <strong>{e.old_p1_score} : {e.old_p2_score}</strong> ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ <strong style={{ color: '#2a9d4f' }}>{e.new_p1_score} : {e.new_p2_score}</strong>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         )}
       </div>
     </main>
