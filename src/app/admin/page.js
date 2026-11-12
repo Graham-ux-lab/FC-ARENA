@@ -370,7 +370,9 @@ export default function Admin() {
                     return (
                       <div className="table-row" key={m.id} style={{ gridTemplateColumns: '60px 1fr 100px 240px', alignItems: 'center' }}>
                         <div>R{m.round}</div>
-                        <div style={{ fontSize: 13 }}>{m.player1_id ? 'P1' : 'TBD'} vs {m.player2_id ? 'P2' : 'TBD'}</div>
+                        <div style={{ fontSize: 13 }}>
+  <strong>{m.player1_name || 'TBD'}</strong> vs <strong>{m.player2_name || 'TBD'}</strong>
+</div>
                         <div style={{ fontWeight: 600 }}>{m.status === 'completed' ? m.player1_score + ' : ' + m.player2_score : '- : -'}</div>
                         <div>
                           {m.player1_id && m.player2_id && (
@@ -415,7 +417,7 @@ export default function Admin() {
                 <button onClick={() => generateBracket('random')} className="btn-primary" style={{ padding: 16, justifyContent: 'flex-start' }}>
                   <div style={{ textAlign: 'left' }}>
                     <strong style={{ display: 'block' }}>Random Shuffle</strong>
-                    <span style={{ fontSize: 12, opacity: 0.7 }}>Fast and fair ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â everyone has an equal chance</span>
+                    <span style={{ fontSize: 12, opacity: 0.7 }}>Fast and fair ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â everyone has an equal chance</span>
                   </div>
                 </button>
                 <button onClick={() => generateBracket('seeded')} className="btn-secondary" style={{ padding: 16, justifyContent: 'flex-start', color: 'var(--text-dark)', borderColor: 'var(--border-light)' }}>
@@ -435,16 +437,16 @@ export default function Admin() {
             <div className="card" style={{ width: '100%', maxWidth: 700, background: 'var(--bg-cream)', maxHeight: '80vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <h3>Audit Log</h3>
-                <button onClick={() => setAuditMatch(null)} style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer' }}>ÃƒÆ’Ã¢â‚¬â€</button>
+                <button onClick={() => setAuditMatch(null)} style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer' }}>ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â</button>
               </div>
               {auditData.length === 0 && <p style={{ color: 'var(--gray-text)' }}>No edits recorded for this match.</p>}
               {auditData.map((e, i) => (
                 <div key={i} style={{ padding: 12, border: '1px solid var(--border-light)', background: '#fff', marginBottom: 8 }}>
                   <div style={{ fontSize: 12, color: 'var(--gray-text)', marginBottom: 4 }}>
-                    {new Date(e.edited_at).toLocaleString()} Ãƒâ€šÃ‚Â· by <strong>{e.editor}</strong>
+                    {new Date(e.edited_at).toLocaleString()} ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· by <strong>{e.editor}</strong>
                   </div>
                   <div style={{ fontSize: 14 }}>
-                    Score: <strong>{e.old_p1_score} : {e.old_p2_score}</strong> ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ <strong style={{ color: '#2a9d4f' }}>{e.new_p1_score} : {e.new_p2_score}</strong>
+                    Score: <strong>{e.old_p1_score} : {e.old_p2_score}</strong> ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ <strong style={{ color: '#2a9d4f' }}>{e.new_p1_score} : {e.new_p2_score}</strong>
                   </div>
                 </div>
               ))}

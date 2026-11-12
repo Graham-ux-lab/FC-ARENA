@@ -8,7 +8,7 @@ export default function Home() {
         <div>
           <span className="badge">Competitive FC Starts Here</span>
           <h1>Your Next<br/><span>Big Match</span><br/>Starts Now.</h1>
-          <p>Find your bracket. Earn your place. FC ARENA is where serious players turn a good run into a name people remember.</p>
+          <p>Find your bracket. Earn your place. XP LOUNGE is where serious players turn a good run into a name people remember.</p>
           <div className="hero-buttons">
             <Link href="/tournaments" className="btn-primary">Find a tournament</Link>
             <Link href="/leaderboard" className="btn-secondary">See the rankings</Link>
@@ -17,7 +17,7 @@ export default function Home() {
         <div>
           <div className="card home-match-card" style={{ background: '#1b2621', color: '#fff', borderColor: '#2a3a33' }}>
             <div className="card-header home-match-card-header">
-              <span>Semi-Final · Match 02</span>
+              <span>Semi-Final Â· Match 02</span>
               <span style={{ color: 'var(--lime-green)' }}>21:30 CET</span>
             </div>
             <div className="home-match-players">
@@ -75,7 +75,7 @@ export default function Home() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
               <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M12 2L15 5H18L21 8V12C21 15.5 18 18 12 22C6 18 3 15.5 3 12V8L6 5H9L12 2Z" fill="#f3f1eb"/><circle cx="12" cy="12" r="4" fill="#ccf380"/></svg>
-              <span style={{ fontFamily: 'Oswald', fontSize: '22px', fontWeight: '700', letterSpacing: '-0.02em' }}>FC ARENA</span>
+              <span style={{ fontFamily: 'Oswald', fontSize: '22px', fontWeight: '700', letterSpacing: '-0.02em' }}>XP LOUNGE</span>
             </div>
             <p style={{ color: '#a0a5a2', fontSize: '14px', maxWidth: '320px', lineHeight: '1.6' }}>
               The competitive home for EA SPORTS FC players. Find your next match and make it count.
@@ -95,7 +95,7 @@ export default function Home() {
           </div>
         </div>
         <div className="content-container" style={{ borderTop: '1px solid #2a3a33', marginTop: '40px', padding: '20px 0 0 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: '#5a625e' }}>
-          <div>© 2026 FC ARENA</div>
+          <div>Â© 2026 XP LOUNGE</div>
         </div>
       </footer>
     </main>
