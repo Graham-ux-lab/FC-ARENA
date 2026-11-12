@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { pool } from '@/lib/db';
 
 export async function POST(req) {
@@ -20,12 +21,22 @@ export async function POST(req) {
     }
 
     const hash = await bcrypt.hash(password, 10);
-    await pool.query(
+    const [result] = await pool.query(
       'INSERT INTO users (username, email, password_hash, ea_id, platform, status) VALUES (?,?,?,?,?,?)',
-      [username, email, hash, ea_id, platform, 'pending']
+      [username, email, hash, ea_id, platform, 'approved']
     );
 
-    return NextResponse.json({ message: 'Registered. Await admin approval.' });
+    // Fetch the newly inserted user to get their ID
+    const [rows] = await pool.query('SELECT id, role FROM users WHERE email = ?', [email]);
+    const newUser = rows[0];
+
+    // Auto-login: sign a JWT immediately
+    const token = jwt.sign({ id: newUser.id, role: newUser.role }, process.env.JWT_SECRET || 'secret');
+
+    return NextResponse.json({ 
+      message: 'Account created. Welcome!', 
+      token 
+    });
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
       return NextResponse.json({ error: 'Username or email already taken' }, { status: 400 });
