@@ -281,7 +281,7 @@ nav {
 
 
 /* =========================================================================
-   MOBILE RESPONSIVENESS ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â EVERYTHING
+   MOBILE RESPONSIVENESS ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â EVERYTHING
    ========================================================================= */
 
 /* Prevent any horizontal overflow globally */
@@ -340,7 +340,7 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
   .page-header h1 { font-size: 36px !important; }
   .page-header p { font-size: 13px !important; margin-bottom: 24px !important; }
 
-  /* All grids ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ single column */
+  /* All grids ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ single column */
   .tournament-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .results-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
   .dash-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
@@ -617,3 +617,58 @@ html, body, #__next, main, section { overflow-x: hidden !important; max-width: 1
 .sk-box { height: 100px; width: 100%; margin-bottom: 16px; }
 .sk-button { height: 44px; width: 100%; margin-top: 16px; }
 .sk-circle { height: 40px; width: 40px; border-radius: 50%; }
+
+
+/* --- HOMEPAGE GRID & MOBILE RESPONSIVENESS --- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.bento-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 60px;
+}
+
+@media (max-width: 768px) {
+  /* Bento Grid Stacks */
+  .bento-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .bento-grid h2 {
+    font-size: 36px !important;
+  }
+  .bento-grid .btn-primary {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Bento Cards Stack */
+  .bento-cards {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Footer Stacks */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .footer-links {
+    justify-content: flex-start !important;
+    gap: 60px !important;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+}
